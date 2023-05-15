@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user',function() {
-   return view('user');
-//    return "Hello World";
+Route::get('/admin_dashboad', function () {
+    return view('Backend.admin_dashboad');
+//    return view('welcome');
+
+})->name('admin_dashboad');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';
+//->middleware(['auth', 'verified'])
